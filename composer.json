@@ -1,0 +1,17 @@
+{
+    "name": "kalidou-guisse/projet-maxit",
+    "autoload": {
+        "psr-4": {
+            "KalidouGuisse\\ProjetMaxit\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kalidou GUISSE",
+            "email": "kalidouguisse16@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
