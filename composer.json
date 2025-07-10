@@ -2,7 +2,11 @@
     "name": "kalidou-guisse/projet-maxit",
     "autoload": {
         "psr-4": {
-            "KalidouGuisse\\ProjetMaxit\\": "src/"
+            "KalidouGuisse\\ProjetMaxit\\": "src/",
+            "Src\\": "src/",
+            "App\\": "app/",
+            "App\\Core\\Abstract\\" : "app/core/abstract/",
+            "App\\Core\\" : "app/core/"
         }
     },
     "authors": [
