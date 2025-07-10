@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'kalidou-guisse/projet-maxit',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '6e91bc48b525b1f5a167f4a495c183e66f7d9335',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'kalidou-guisse/projet-maxit' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '6e91bc48b525b1f5a167f4a495c183e66f7d9335',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

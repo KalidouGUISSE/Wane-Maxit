@@ -18,6 +18,7 @@ class ComposerStaticInit2908c8ef7a35fb8e51bbe7e82972b657
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Src\\' => 4,
         ),
         'P' => 
         array (
@@ -35,6 +36,12 @@ class ComposerStaticInit2908c8ef7a35fb8e51bbe7e82972b657
         array (
             'Dotenv\\' => 7,
         ),
+        'A' => 
+        array (
+            'App\\Core\\Abstract\\' => 18,
+            'App\\Core\\' => 9,
+            'App\\' => 4,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -49,6 +56,10 @@ class ComposerStaticInit2908c8ef7a35fb8e51bbe7e82972b657
         'Symfony\\Polyfill\\Ctype\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Src\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'PhpOption\\' => 
         array (
@@ -65,6 +76,18 @@ class ComposerStaticInit2908c8ef7a35fb8e51bbe7e82972b657
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
+        ),
+        'App\\Core\\Abstract\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/core/abstract',
+        ),
+        'App\\Core\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/core',
+        ),
+        'App\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app',
         ),
     );
 
