@@ -4,6 +4,7 @@ namespace Src\repository;
 use PDO;
 use PDOException;
 use App\Core\Database;
+use App\Core\App;
 
 class CompteRepository {
     private PDO $pdo;
@@ -12,32 +13,22 @@ class CompteRepository {
         $this->pdo = Database::getConnection();
     }
 
-    public function insert($telephone, $solde, $typeCompte, $userId)
-    {
+    public function insert(string $telephone, int $userId): void {
         try {
-            // Début de transaction
-            // $this->pdo->beginTransaction();
+            $sql = "INSERT INTO compte (numero_du_compte, solde, type_compte, user_id)
+                    VALUES (:numero_du_compte, :solde, :type_compte, :user_id)";
 
-            $sqlCompte = "INSERT INTO compte (numero_du_compte, solde, type_compte, user_id)
-                          VALUES (:numero_du_compte, :solde, :type_compte, :user_id)";
-            
-            $stmtCompte = $this->pdo->prepare($sqlCompte);
-
+            $stmt = $this->pdo->prepare($sql);
             $solde = 0;
             $typeCompte = 'principal';
 
-            $stmtCompte->bindParam(':numero_du_compte', $telephone);
-            $stmtCompte->bindParam(':solde', $solde);
-            $stmtCompte->bindParam(':type_compte', $typeCompte);
-            $stmtCompte->bindParam(':user_id', $userId);
-            
-            $stmtCompte->execute();
-            
-            // var_dump(" compte");die;
-            // $this->pdo->commit();
+            $stmt->bindParam(':numero_du_compte', $telephone);
+            $stmt->bindParam(':solde', $solde);
+            $stmt->bindParam(':type_compte', $typeCompte);
+            $stmt->bindParam(':user_id', $userId);
 
+            $stmt->execute();
         } catch (PDOException $e) {
-            // En cas d’erreur, rollback (annule tout)
             $this->pdo->rollBack();
             throw $e;
         }

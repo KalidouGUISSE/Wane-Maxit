@@ -5,13 +5,23 @@ use PDO;
 use PDOException;
 class Database {
     private static ?PDO $pdo = null;
+    private static ?Database $instance = null;
+
+    private function __construct() {}
+
+    public static function getInstance(): Database {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
 
     public static function getConnection(): PDO {
         if (self::$pdo === null) {
-            $host = 'localhost';
-            $dbname = 'maxitsa';
-            $username = 'kalidou';
-            $password = 'kalidou';
+            $host = HOST;
+            $dbname = DB_NAME;
+            $username = USER_NAME;
+            $password = PASSWORD;
 
             try {
                 self::$pdo = new PDO("pgsql:host=$host;dbname=$dbname", $username, $password);

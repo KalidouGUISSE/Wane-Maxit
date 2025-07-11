@@ -1,23 +1,25 @@
 <?php
-namespace App\Core;
+namespace App\Core\Abstract;
 
-abstract class AbstracteContoller {
+abstract class AbstractController {
     protected string $layout;
-    protected Session $session;
+    // protected Session $session;
+
     public function __construct(){
-        $this->layout = '/../../templaye/layoute/base.layoute.php';
-        $this->session = Session::getInstance();
+        $this->layout = '../templates/layout/base.layoute.php';
+        // $this->session = Session::getInstance();
     }
     
     public function renderhtml(string $view, array $data = []) {
         extract($data);
 
         ob_start();
-        require_once __DIR__ . '/../../templaye/' . $view;
+        require_once '../templates/' . $view;
         $containteForLayoute = ob_get_clean();
 
         // On inclut le layout général, qui peut utiliser $containteForLayoute
-        require_once __DIR__ . $this->layout;
+        require_once $this->layout;
+        // require_once "../templates/listerTransaction.html.php";
     }
 
     abstract public function show();

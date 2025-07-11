@@ -15,6 +15,7 @@ class SecuriteService{
     }
 
     public function creerUtilisateurEtCompte(
+        string $password,
         string $telephone,
         string $nci,
         string $nom,
@@ -24,20 +25,13 @@ class SecuriteService{
         ?array $photoVerso
     ): void {
         $pdo = Database::getConnection();
-        
+
         try {
             $pdo->beginTransaction();
-            
-            $userId = $this->utilisateurRepository->insert($telephone, $nci, $nom, $prenom, $adresse, $photoRecto, $photoVerso);
-            
-            $this->compteRepository->insert($telephone, 0, 'principal', $userId);
-            
+            $userId = $this->utilisateurRepository->insert($password, $telephone, $nci, $nom, $prenom, $adresse, $photoRecto, $photoVerso);
+            $this->compteRepository->insert($telephone, $userId);
             $pdo->commit();
-            // var_dump('kjsdjs');
-            // var_dump($userId);die;
         } catch (\PDOException $e) {
-            var_dump('eror');die;
-
             $pdo->rollBack();
             throw new \Exception("Erreur lors de la création du compte utilisateur : " . $e->getMessage());
         }

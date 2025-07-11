@@ -1,6 +1,8 @@
 <?php
 class Auth{
-    public function __invoke(){
-}
+    public function __invoke()
+    {
+        
+    }
 
 }

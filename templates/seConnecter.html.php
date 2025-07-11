@@ -63,7 +63,7 @@
                     <p class="text-gray-600">Accédez à votre compte MAXITSA</p>
                 </div>
 
-                <form id="loginForm" class="space-y-6">
+                <form id="loginForm" class="space-y-6" action="<?=$_ENV['URI_HOST']?>listerTransaction">
                     <!-- Phone Number Input -->
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
@@ -192,7 +192,7 @@
                 <div class="mt-6 text-center">
                     <p class="text-sm text-gray-600">
                         Vous n'avez pas de compte ?
-                        <a href="#" class="font-medium text-orange-600 hover:text-orange-500 transition-colors">
+                        <a href="<?=$_ENV['URI_HOST']?>creerCompte" class="font-medium text-orange-600 hover:text-orange-500 transition-colors">
                             Créer un compte
                         </a>
                     </p>
@@ -232,32 +232,32 @@
         }
 
         // Form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // document.getElementById('loginForm').addEventListener('submit', function(e) {
+        //     e.preventDefault();
             
-            const loginButton = this.querySelector('button[type="submit"]');
-            const loginText = document.getElementById('loginText');
-            const loginSpinner = document.getElementById('loginSpinner');
+        //     const loginButton = this.querySelector('button[type="submit"]');
+        //     const loginText = document.getElementById('loginText');
+        //     const loginSpinner = document.getElementById('loginSpinner');
             
-            // Show loading state
-            loginButton.disabled = true;
-            loginText.textContent = 'Connexion...';
-            loginSpinner.classList.remove('hidden');
+        //     // Show loading state
+        //     loginButton.disabled = true;
+        //     loginText.textContent = 'Connexion...';
+        //     loginSpinner.classList.remove('hidden');
             
-            // Simulate API call
-            setTimeout(() => {
-                // For demo, just show success message
-                alert('Connexion réussie !');
+        //     // Simulate API call
+        //     setTimeout(() => {
+        //         // For demo, just show success message
+        //         alert('Connexion réussie !');
                 
-                // Reset button state
-                loginButton.disabled = false;
-                loginText.textContent = 'Se connecter';
-                loginSpinner.classList.add('hidden');
+        //         // Reset button state
+        //         loginButton.disabled = false;
+        //         loginText.textContent = 'Se connecter';
+        //         loginSpinner.classList.add('hidden');
                 
-                // In real app, redirect to dashboard
-                // window.location.href = '/dashboard';
-            }, 2000);
-        });
+        //         // In real app, redirect to dashboard
+        //         // window.location.href = '/dashboard';
+        //     }, 2000);
+        // });
 
         // Phone number formatting
         document.getElementById('phone').addEventListener('input', function(e) {

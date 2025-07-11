@@ -9,7 +9,7 @@ class App {
         $this->dependencies = [
             "core" => [
                 "router"     => new Router(),
-                // "database"   => Database::getInstance(),
+                "database"   => Database::getInstance(),
                 "validator"  => Validator::getInstance()
             ],
             "services" => [],
@@ -48,3 +48,12 @@ class App {
         return $app->dependencies[$category][$key];
     }
 }
+
+        // $validator = $validator->getInstance();
+        // $validator = Validator::getInstance();
+        // $validator = App::getDependencie('core', 'validator');
+
+        // Obtenir toutes les dépendances core :
+        // $core = App::getDependencie('core');
+        // Obtenir toutes les dépendances :
+        // $toutes = App::getDependencie();
