@@ -1,5 +1,6 @@
 <?php
 namespace App\Core;
+use App\Core\Validator\Validator;
 
 class App {
     private static ?App $instance = null;
@@ -9,8 +10,9 @@ class App {
         $this->dependencies = [
             "core" => [
                 "router"     => new Router(),
-                "database"   => Database::getInstance(),
-                "validator"  => Validator::getInstance()
+                // "database"   => Database::getInstance(),
+                "validator"  => Validator::getInstance(),
+                "session"    => Session::getInstance(),
             ],
             "services" => [],
             "repositories" => [],

@@ -81,7 +81,7 @@
                                 name="phone"
                                 placeholder="+221 77 123 45 67"
                                 class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors"
-                                required
+                                
                             />
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                                 name="password"
                                 placeholder="Entrez votre mot de passe"
                                 class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors"
-                                required
+                                
                             />
                             <button 
                                 type="button" 

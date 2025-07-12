@@ -6,7 +6,7 @@ use PDOException;
 use App\Core\Database;
 use App\Core\Abstract\AbstractRepository;
 
-class UtilisateurRepository extends AbstractRepository {
+class UtilisateurRepository{
 
     public function __construct() {
         $this->pdo = Database::getConnection();
@@ -53,4 +53,30 @@ class UtilisateurRepository extends AbstractRepository {
     }
     
 
+    public function existsBy(string $column, $value): ?array {
+        $allowedColumns = ['nci', 'num_tel'];
+    
+        if (!in_array($column, $allowedColumns)) {
+            throw new \InvalidArgumentException("Colonne non autorisée : $column");
+        }
+    
+        $sql = "SELECT * FROM utilisateur WHERE $column = :value LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['value' => $value]);
+    
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result ?: null;
+    }
+
+    public function validExistsBy(string $column, $value): bool {
+        return $this->selectBy($column, $value) !== null;
+    }
+
+
+    public function selectAll(){}
+    // public function selectBy(array $filter){}
+    // abstract public function insert();
+    public function update(){}
+    public function delete(){}
+    public function selectById(){}
 }

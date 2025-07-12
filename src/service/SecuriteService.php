@@ -1,10 +1,12 @@
 <?php
 namespace Src\service;
+
 use Src\repository\CompteRepository;
 use Src\repository\UtilisateurRepository;
 use App\Core\Database;
+use App\Core\Validator\contracts\UniqueValueCheckerInterface;
 
-class SecuriteService{
+class SecuriteService implements UniqueValueCheckerInterface {
 
     private UtilisateurRepository $utilisateurRepository;
     private CompteRepository $compteRepository;
@@ -12,6 +14,16 @@ class SecuriteService{
     public function __construct(){
         $this->utilisateurRepository = new UtilisateurRepository();
         $this->compteRepository = new CompteRepository();
+    }
+
+    // Cette méthode est requise par UniqueValueCheckerInterface
+    public function isUnique(string $column, $value): bool {
+        return !$this->utilisateurRepository->existsBy($column, $value);
+    }
+
+    // Ancien nom (optionnel à garder si utilisé ailleurs)
+    public function verifierUnique(string $column, $value): bool {
+        return $this->isUnique($column, $value);
     }
 
     public function creerUtilisateurEtCompte(
