@@ -1,22 +1,27 @@
 <?php
 namespace App\Core;
-// require_once '../config/core/middleware.php'; 
 
-class Router{
+use App\Core\Middlewares\Auth;
+use Src\controller\ErrorController;
+
+class Router {
     public static function resolve(array $routes) {
         $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    //   var_dump($url);die;
+
         if (isset($routes[$url])) {
             $controllerName = $routes[$url]['controller'];
             $actionName = $routes[$url]['action'];
 
-            // var_dump($actionName);die;
-            // var_dump($controllerName);die;
-
-            // $middlewares = $routes[$url]['middleware'];
-            // foreach ($middlewares as $middleware) {
-            //     $middleware();
-            // }
+            // Charger la config des middlewares
+            $middlewaresConfig = require_once __DIR__ . '/../config/middlewares.php';
+            $middlewares = $routes[$url]['middleware'] ?? [];
+            foreach ($middlewares as $middlewareKey) {
+                // var_dump('ads');die;
+                if (isset($middlewaresConfig[$middlewareKey])) {
+                    $middlewareClass = $middlewaresConfig[$middlewareKey];
+                    (new $middlewareClass())(); // Appelle __invoke()
+                }
+            }
 
             $controller = new $controllerName();
             $controller->$actionName();

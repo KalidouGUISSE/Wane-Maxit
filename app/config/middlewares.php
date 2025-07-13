@@ -1,5 +1,5 @@
 <?php
 $middlewares=[
-    “auth”=> Auth::class
+    'auth'=> Auth::class
     
 ];

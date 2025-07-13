@@ -12,4 +12,9 @@ class UtilisateurService{
     public function creerClient($telephone, $nci, $nom, $prenom, $adresse, $photoRecto, $photoVerso) {
         return $this->utilisateurRepository->insert($telephone, $nci, $nom, $prenom, $adresse, $photoRecto, $photoVerso);
     }
+
+    public function verifierConnexion(string $telephone, string $password): array|bool {
+        $user = $this->utilisateurRepository->checkCredentials($telephone, $password);
+        return $user;
+    }
 }

@@ -1,3 +1,10 @@
+<?php
+$session = \App\Core\App::getDependencie('core', 'session');
+$errors = $session->get('errors') ?? [];
+$old = $session->get('old') ?? [];
+$session->unset('errors');
+$session->unset('old');
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -62,8 +69,7 @@
                     <h2 class="text-2xl font-bold text-gray-900 mb-2">Connexion</h2>
                     <p class="text-gray-600">Accédez à votre compte MAXITSA</p>
                 </div>
-
-                <form id="loginForm" class="space-y-6" action="<?=$_ENV['URI_HOST']?>listerTransaction">
+                <form id="loginForm" method="post" class="space-y-6" action="<?=$_ENV['URI_HOST']?>listerTransaction">
                     <!-- Phone Number Input -->
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
@@ -75,14 +81,18 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                                 </svg>
                             </div>
+                            <?php $phoneError = !empty($errors['telephone']); ?>
                             <input 
                                 type="tel" 
-                                id="phone"
-                                name="phone"
+                                id="telephone"
+                                name="telephone"
                                 placeholder="+221 77 123 45 67"
-                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors"
-                                
+                                value="<?= htmlspecialchars($old['telephone'] ?? '') ?>"
+                                class="w-full pl-10 pr-4 py-3 rounded-lg transition-colors border <?= $phoneError ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-orange-500' ?>"
                             />
+                            <?php if ($phoneError): ?>
+                                <p class="text-sm text-red-600 mt-1"><?= $errors['telephone'][0] ?></p>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -97,14 +107,17 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                                 </svg>
                             </div>
+                            <?php $passwordError = !empty($errors['password']); ?>
                             <input 
                                 type="password" 
                                 id="password"
                                 name="password"
                                 placeholder="Entrez votre mot de passe"
-                                class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors"
-                                
+                                class="w-full pl-10 pr-12 py-3 rounded-lg transition-colors border <?= $passwordError ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-orange-500' ?>"
                             />
+                            <?php if ($passwordError): ?>
+                                <p class="text-sm text-red-600 mt-1"><?= $errors['password'][0] ?></p>
+                            <?php endif; ?>
                             <button 
                                 type="button" 
                                 onclick="togglePassword()"
@@ -260,15 +273,10 @@
         // });
 
         // Phone number formatting
-        document.getElementById('phone').addEventListener('input', function(e) {
+        document.getElementById('telephone').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
             
-            // Add country code if not present
-            if (value.length > 0 && !value.startsWith('221')) {
-                if (value.startsWith('7')) {
-                    value = '221' + value;
-                }
-            }
+
             
             // Format the number
             if (value.length >= 3) {

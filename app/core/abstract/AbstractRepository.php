@@ -7,5 +7,5 @@ abstract class AbstractRepository {
     // abstract public function insert();
     public function update(){}
     public function delete(){}
-    public function selectById(){}
+    abstract public function selectById(int $userId);
 }

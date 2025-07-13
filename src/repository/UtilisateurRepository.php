@@ -72,6 +72,21 @@ class UtilisateurRepository{
         return $this->selectBy($column, $value) !== null;
     }
 
+    public function checkCredentials(string $telephone, string $password): ?array {
+        $sql = "SELECT * FROM utilisateur WHERE num_tel = :telephone";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['telephone' => $telephone]);
+    
+        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+    
+        if ($user && password_verify($password, $user['password'])) {
+            return $user;
+        }
+    
+        return null;
+    }
+    
+
 
     public function selectAll(){}
     // public function selectBy(array $filter){}

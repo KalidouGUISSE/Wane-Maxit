@@ -19,9 +19,12 @@ class SecuritieController extends AbstractController {
         require_once "../templates/seConnecter.html.php";
     }
 
-    public function deconnexion(){
+    public function deconnexion() {
+        $this->session->destroy(); 
         header('Location: /');
+        exit;
     }
+
 
     public function creerCompte(){
         $this->renderhtml('client/creercompte.html.php');
