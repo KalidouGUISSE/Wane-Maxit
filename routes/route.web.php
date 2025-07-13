@@ -11,5 +11,7 @@ $routes = [
     '/motdepasse' => ['controller' => SecuritieController::class, 'action' => 'motdepasse'],
     '/creer' => ['controller' => SecuritieController::class, 'action' => 'creer' ],
     '/creerCompte' => ['controller' => SecuritieController::class, 'action' => 'creerCompte' ],
-    '/listerTransaction' => ['controller' => UtilisateurController::class, 'action' => 'listerTransaction','middleware' => ['auth'] ]
+    '/seConnecter' => ['controller' => UtilisateurController::class, 'action' => 'seConnecter'],
+    '/listerTransaction' => ['controller' => TransactionController::class, 'action' => 'listerTransaction','middleware' => ['auth'] ]
+
 ];

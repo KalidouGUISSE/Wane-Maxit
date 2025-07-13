@@ -1,4 +1,8 @@
-
+<?php
+$session = \App\Core\App::getDependencie('core', 'session');
+$solde_user = $session->get('user')['solde'] ?? [];
+// var_dump($solde_user);die;
+?>
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Action Cards -->
@@ -60,15 +64,33 @@
 
         <!-- Transaction History -->
         <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div class="px-6 py-4 bg-gradient-to-r from-orange-50 to-orange-100 border-b border-orange-200">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold text-gray-900">Historique des transactions</h2>
-                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                        Voir plus
-                    </button>
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-gray-900">
+                    Historique des transactions
+                </h2>
+                
+                <!-- Affichage du solde amélioré -->
+                <div class="flex items-center gap-4">
+                    <div class="bg-white/80 backdrop-blur-sm border border-green-200 px-4 py-2 rounded-xl shadow-sm">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                            <span class="text-xs font-medium text-gray-600 uppercase tracking-wide">Solde disponible</span>
+                        </div>
+                        <div class="flex items-baseline gap-1 mt-1">
+                            <span class="text-2xl font-bold text-green-700"><?= number_format($solde_user, 2, ',', ' ') ?></span>
+                            <span class="text-sm font-semibold text-green-600">FCFA</span>
+                        </div>
+                    </div>
+                    
+                    <form action="<?=$_ENV['URI_HOST']?>listerTransaction" method="post">
+                        <input name="voirPlus" style="display: none;">
+                        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 shadow-sm hover:shadow-md">
+                            Voir plus
+                        </button>
+                    </form>
                 </div>
             </div>
-            
+                
             <div class="overflow-x-auto">
                 <table class="w-full">
                     <thead class="bg-gray-50">
@@ -80,7 +102,7 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        <?php foreach (array_slice($transaction, 0, 10)as $t): ?>
+                        <?php foreach ($transaction as $t): ?>
                             <tr class="table-row">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     <?= date('d-m-Y', strtotime($t['date'])) ?>

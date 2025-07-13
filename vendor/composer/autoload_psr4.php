@@ -14,6 +14,7 @@ return array(
     'KalidouGuisse\\ProjetMaxit\\' => array($baseDir . '/src'),
     'GrahamCampbell\\ResultType\\' => array($vendorDir . '/graham-campbell/result-type/src'),
     'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),
+    'App\\Core\\Middlewares\\' => array($baseDir . '/app/core/middlewares'),
     'App\\Core\\Abstract\\' => array($baseDir . '/app/core/abstract'),
     'App\\Core\\' => array($baseDir . '/app/core'),
     'App\\' => array($baseDir . '/app'),

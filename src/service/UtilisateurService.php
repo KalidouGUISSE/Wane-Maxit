@@ -13,7 +13,7 @@ class UtilisateurService{
         return $this->utilisateurRepository->insert($telephone, $nci, $nom, $prenom, $adresse, $photoRecto, $photoVerso);
     }
 
-    public function verifierConnexion(string $telephone, string $password): array|bool {
+    public function verifierConnexion(string $telephone, string $password): array|null {
         $user = $this->utilisateurRepository->checkCredentials($telephone, $password);
         return $user;
     }

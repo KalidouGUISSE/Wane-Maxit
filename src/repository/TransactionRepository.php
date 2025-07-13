@@ -24,16 +24,30 @@ class TransactionRepository extends AbstractRepository{
     public function delete(){}
 
     
-    public function selectById(int $userId){
-        // $sql = "SELECT * FROM transaction WHERE utilisateur_id = :user_id";
-        $sql = "    
-                SELECT t.date, t.type_transaction, t.compte_id, c.user_id, t.tarif, t.numero_destinataire from transaction t
-                RIGHT JOIN compte c on t.compte_id = c.id
-                JOIN utilisateur u on c.user_id = u.id
-                WHERE c.statut = 'actif' and c.user_id = :user_id";
-
+    public function selectById(int $userId, ?int $limit = null)
+    {
+        $sql = "
+            SELECT t.date, t.type_transaction, t.compte_id, c.user_id, t.tarif, t.numero_destinataire 
+            FROM transaction t
+            RIGHT JOIN compte c ON t.compte_id = c.id
+            JOIN utilisateur u ON c.user_id = u.id
+            WHERE c.statut = 'actif' AND c.user_id = :user_id
+            ORDER BY t.date DESC
+        ";
+    
+        if ($limit !== null) {
+            $sql .= " LIMIT :limit";
+        }
+    
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['user_id' => $userId]);
+        $stmt->bindValue(':user_id', $userId, \PDO::PARAM_INT);
+        
+        if ($limit !== null) {
+            $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        }
+    
+        $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+    
 }

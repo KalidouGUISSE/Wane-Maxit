@@ -69,7 +69,7 @@ $session->unset('old');
                     <h2 class="text-2xl font-bold text-gray-900 mb-2">Connexion</h2>
                     <p class="text-gray-600">Accédez à votre compte MAXITSA</p>
                 </div>
-                <form id="loginForm" method="post" class="space-y-6" action="<?=$_ENV['URI_HOST']?>listerTransaction">
+                <form id="loginForm" method="post" class="space-y-6" action="<?=$_ENV['URI_HOST']?>seConnecter">
                     <!-- Phone Number Input -->
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">

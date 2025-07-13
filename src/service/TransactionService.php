@@ -12,11 +12,12 @@ class TransactionService{
         $this->transactionRepository = new TransactionRepository();
     }
 
-    public function getTransaction(){
-        return $this->transactionRepository->selectAll();
-    }
+    // public function getTransaction(){
+    //     return $this->transactionRepository->selectAll();
+    // }
 
-    public function getTransactionsByUserId(int $userId): array {
-        return $this->transactionRepository->selectById($userId);
+    public function getTransactions(int $userId, ?int $limit = null): array {
+        return $this->transactionRepository->selectById($userId, $limit);
     }
+    
 }

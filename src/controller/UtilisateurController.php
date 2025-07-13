@@ -1,6 +1,6 @@
 <?php
 namespace Src\controller;
-use Src\service\TransactionService;
+// use Src\service\TransactionService;
 use App\Core\Abstract\AbstractController;
 
 // use App\Core\Validator\Rules\RequiredRule;
@@ -12,15 +12,15 @@ use Src\service\UtilisateurService;
 
 class UtilisateurController extends AbstractController {
     private UtilisateurService $utilisateurService;
-    private TransactionService $transactionService;
+    // private TransactionService $transactionService;
 
     public function __construct(){
         parent::__construct();
         $this->utilisateurService = new UtilisateurService();
-        $this->transactionService = new TransactionService();
+        // $this->transactionService = new TransactionService();
     }
 
-    public function listerTransaction() {
+    public function seConnecter() {
         $data = $_POST;
         $validator = $this->validator;
         $session = $this->session;
@@ -45,15 +45,12 @@ class UtilisateurController extends AbstractController {
             header('Location: /');
             exit;
         }
-    
+
         $session->set('user', $user);
-        $userId = $user['id'];
-        $transactions = $this->transactionService->getTransactionsByUserId($userId);
-        // var_dump($transactions);die;
-        $this->renderhtml('listerTransaction.html.php', [
-            'transaction' => $transactions
-        ]);
+        header('Location: /listerTransaction');
     }
+
+
 
     public function show(){}
     public function edit(){}

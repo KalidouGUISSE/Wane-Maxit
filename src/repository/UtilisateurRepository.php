@@ -73,12 +73,18 @@ class UtilisateurRepository{
     }
 
     public function checkCredentials(string $telephone, string $password): ?array {
-        $sql = "SELECT * FROM utilisateur WHERE num_tel = :telephone";
+        $sql = "
+            SELECT u.id, u.nom, u.prenom, u.num_tel, u.adresse, u.password, u.photo_recto, u.photo_verso, c.numero_du_compte , c.solde
+            FROM utilisateur u 
+            JOIN compte c on u.id = c.user_id
+            WHERE u.num_tel = :telephone";
+            
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['telephone' => $telephone]);
     
         $user = $stmt->fetch(\PDO::FETCH_ASSOC);
     
+        var_dump($user);
         if ($user && password_verify($password, $user['password'])) {
             return $user;
         }

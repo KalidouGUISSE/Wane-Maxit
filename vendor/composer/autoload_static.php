@@ -38,6 +38,7 @@ class ComposerStaticInit2908c8ef7a35fb8e51bbe7e82972b657
         ),
         'A' => 
         array (
+            'App\\Core\\Middlewares\\' => 21,
             'App\\Core\\Abstract\\' => 18,
             'App\\Core\\' => 9,
             'App\\' => 4,
@@ -76,6 +77,10 @@ class ComposerStaticInit2908c8ef7a35fb8e51bbe7e82972b657
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
+        ),
+        'App\\Core\\Middlewares\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/core/middlewares',
         ),
         'App\\Core\\Abstract\\' => 
         array (

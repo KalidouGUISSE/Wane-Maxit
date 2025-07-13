@@ -6,7 +6,8 @@
             "Src\\": "src/",
             "App\\": "app/",
             "App\\Core\\Abstract\\" : "app/core/abstract/",
-            "App\\Core\\" : "app/core/"
+            "App\\Core\\" : "app/core/",
+            "App\\Core\\Middlewares\\": "app/core/middlewares/"
         }
     },
     "authors": [
