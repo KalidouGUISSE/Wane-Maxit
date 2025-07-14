@@ -1,8 +1,8 @@
 <?php
 namespace App\Core\Validator\Rules;
+use App\Core\Messages\ValidationMessage;
 
 use App\Core\Validator\Contracts\UniqueValueCheckerInterface;
-// use App\Core\Validator\Rules\ValidationRuleInterface;
 
 class UniqueRule implements ValidationRuleInterface {
     private string $champ;
@@ -12,10 +12,10 @@ class UniqueRule implements ValidationRuleInterface {
     public function __construct(
         string $champ,
         UniqueValueCheckerInterface $checker,
-        string $message = "Cette valeur est déjà utilisé."
+        string|ValidationMessage $message = ValidationMessage::IS_USED
     ) {
         $this->champ = $champ;
-        $this->message = $message;
+        $this->message = $message instanceof ValidationMessage ? $message->value : $message;
         $this->checker = $checker;
     }
 

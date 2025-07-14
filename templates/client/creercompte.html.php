@@ -1,9 +1,16 @@
 <?php 
-session_start();
-if (isset($_SESSION['errors'])) {
-    $errors = $_SESSION['errors'];
-    unset($_SESSION['errors']);
-}   
+// session_start();
+
+$session = \App\Core\App::getDependencie('core', 'session');
+$errors = $session->get('errors') ?? [];
+$old = $session->get('old') ?? [];
+$session->unset('errors');
+$session->unset('old');
+
+// if (isset($_SESSION['errors'])) {
+//     $errors = $_SESSION['errors'];
+//     unset($_SESSION['errors']);
+// }   
 ?>
 
 <div class="bg-white rounded-lg shadow-lg p-8">

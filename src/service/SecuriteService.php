@@ -5,6 +5,9 @@ use Src\repository\CompteRepository;
 use Src\repository\UtilisateurRepository;
 use App\Core\Database;
 use App\Core\Validator\contracts\UniqueValueCheckerInterface;
+use App\Core\FileUpload;
+use App\Core\Sms\TwilioSmsService;
+use App\Core\Messages\ValidationMessage;
 
 class SecuriteService implements UniqueValueCheckerInterface {
 
@@ -37,15 +40,34 @@ class SecuriteService implements UniqueValueCheckerInterface {
         ?array $photoVerso
     ): void {
         $pdo = Database::getConnection();
-
+        $fileUploader = new FileUpload();
         try {
             $pdo->beginTransaction();
-            $userId = $this->utilisateurRepository->insert($password, $telephone, $nci, $nom, $prenom, $adresse, $photoRecto, $photoVerso);
+            // Upload des fichiers
+            $photoRectoName = $photoRecto ? $fileUploader->upload($photoRecto, 'recto') : null;
+            $photoVersoName = $photoVerso ? $fileUploader->upload($photoVerso, 'verso') : null;
+            // var_dump($telephone,$photoRectoName);
+            // Insertion utilisateur
+            $userId = $this->utilisateurRepository->insert(
+                $password, $telephone, $nci, $nom, $prenom, $adresse,
+                $photoRectoName, $photoVersoName
+            );
             $this->compteRepository->insert($telephone, $userId);
+
             $pdo->commit();
+            $smsService = new TwilioSmsService(
+                TWILIO_SID,
+                TWILIO_TOKEN,
+                TWILIO_FROM
+            );
+            $smsService->send(
+                ValidationMessage::INDICATEUR->value . $telephone,
+                ValidationMessage::BONJOUR->value . " $prenom, " . ValidationMessage::COMPT_CREER->value
+            );
         } catch (\PDOException $e) {
             $pdo->rollBack();
             throw new \Exception("Erreur lors de la création du compte utilisateur : " . $e->getMessage());
         }
     }
+
 }

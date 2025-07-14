@@ -1,10 +1,5 @@
 <?php
 namespace App\Core\Validator;
-// use App\Core\Validator\Validator;
-// use App\Core\Validator\Rules\RequiredRule;
-// use App\Core\Validator\Rules\SenegalPhoneRule;
-// use App\Core\Validator\Rules\NciRule;
-// use App\Core\Validator\Rules\FileRequiredRule;
 use App\Core\Validator\Rules\ValidationRuleInterface;
 
 class Validator {

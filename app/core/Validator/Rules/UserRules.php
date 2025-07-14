@@ -1,5 +1,6 @@
 <?php
 namespace App\Core\Validator\Rules;
+use App\Core\Messages\ValidationMessage;
 
 use Src\service\SecuriteService;
 
@@ -9,22 +10,22 @@ class UserRules
         $checker = new SecuriteService();
 
         return [
-            'nom'                       => [new RequiredRule()],
-            'prenom'                    => [new RequiredRule()],
-            'password'                  => [new RequiredRule()],
-            'adresse'                   => [new RequiredRule()],
-            'photo_recto'               => [new FileRequiredRule()],
-            'photo_verso'               => [new FileRequiredRule()],
-            'password_confirmation'     => [new Compare('password')],
-            'telephone'                 => [
+            ValidationMessage::KEY_NOM->value                       => [new RequiredRule()],
+            ValidationMessage::KEY_PRENOM->value                    => [new RequiredRule()],
+            ValidationMessage::KEY_PASSWORD->value                  => [new RequiredRule()],
+            ValidationMessage::KEY_ADRESSE->value                   => [new RequiredRule()],
+            ValidationMessage::KEY_PHOTO_RECTO->value               => [new FileRequiredRule()],
+            ValidationMessage::KEY_PHOTO_VERSO->value               => [new FileRequiredRule()],
+            ValidationMessage::KEY_PASSWORD_CONFIRMATION->value     => [new Compare(ValidationMessage::KEY_PASSWORD->value)],
+            ValidationMessage::KEY_TELEPHONE->value                 => [
                 new RequiredRule(),
                 new SenegalPhoneRule(),
-                new UniqueRule('num_tel', $checker, 'Ce numéro est déjà utilisé.')
+                new UniqueRule('num_tel', $checker, ValidationMessage::PHONE_EXISTS->value)
             ],
-            'nci'                       => [
+            ValidationMessage::KEY_NCI->value                       => [
                 new RequiredRule(),
                 new NciRule(),
-                new UniqueRule('nci', $checker, 'Ce NCI est déjà utilisé.')
+                new UniqueRule('nci', $checker, ValidationMessage::NCI_EXISTS->value)
             ],
         ];
     }

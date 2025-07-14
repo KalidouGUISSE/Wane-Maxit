@@ -13,6 +13,10 @@ class ComposerStaticInit2908c8ef7a35fb8e51bbe7e82972b657
     );
 
     public static $prefixLengthsPsr4 = array (
+        'T' => 
+        array (
+            'Twilio\\' => 7,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
@@ -38,7 +42,9 @@ class ComposerStaticInit2908c8ef7a35fb8e51bbe7e82972b657
         ),
         'A' => 
         array (
+            'App\\Core\\Sms\\' => 13,
             'App\\Core\\Middlewares\\' => 21,
+            'App\\Core\\Messages\\' => 18,
             'App\\Core\\Abstract\\' => 18,
             'App\\Core\\' => 9,
             'App\\' => 4,
@@ -46,6 +52,10 @@ class ComposerStaticInit2908c8ef7a35fb8e51bbe7e82972b657
     );
 
     public static $prefixDirsPsr4 = array (
+        'Twilio\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/twilio/sdk/src/Twilio',
+        ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
@@ -78,9 +88,17 @@ class ComposerStaticInit2908c8ef7a35fb8e51bbe7e82972b657
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
         ),
+        'App\\Core\\Sms\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/core/sms',
+        ),
         'App\\Core\\Middlewares\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app/core/middlewares',
+        ),
+        'App\\Core\\Messages\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/core/messages',
         ),
         'App\\Core\\Abstract\\' => 
         array (

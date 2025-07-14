@@ -7,7 +7,9 @@
             "App\\": "app/",
             "App\\Core\\Abstract\\" : "app/core/abstract/",
             "App\\Core\\" : "app/core/",
-            "App\\Core\\Middlewares\\": "app/core/middlewares/"
+            "App\\Core\\Middlewares\\": "app/core/middlewares/",
+            "App\\Core\\Messages\\": "app/core/messages/",
+            "App\\Core\\Sms\\" : "app/core/sms"
         }
     },
     "authors": [
@@ -17,6 +19,7 @@
         }
     ],
     "require": {
-        "vlucas/phpdotenv": "^5.6"
+        "vlucas/phpdotenv": "^5.6",
+        "twilio/sdk": "^8.6"
     }
 }

@@ -1,13 +1,16 @@
 <?php
 namespace App\Core\Validator\Rules;
+use App\Core\Messages\ValidationMessage;
+
 
 class Compare implements ValidationRuleInterface {
     private string $otherField;
     private string $message;
 
-    public function __construct(string $otherField, string $message = "Les champs ne correspondent pas.") {
+    public function __construct(string $otherField, string|ValidationMessage $message = ValidationMessage::PASSWORD_MISMATCH) {
         $this->otherField = $otherField;
-        $this->message = $message;
+        $this->message = $message instanceof ValidationMessage ?  $message->value : $message;
+
     }
 
     public function validate(string $key, $value, array &$errors): void {
