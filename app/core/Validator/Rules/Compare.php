@@ -10,7 +10,6 @@ class Compare implements ValidationRuleInterface {
     public function __construct(string $otherField, string|ValidationMessage $message = ValidationMessage::PASSWORD_MISMATCH) {
         $this->otherField = $otherField;
         $this->message = $message instanceof ValidationMessage ?  $message->value : $message;
-
     }
 
     public function validate(string $key, $value, array &$errors): void {

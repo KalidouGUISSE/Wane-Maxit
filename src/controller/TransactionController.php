@@ -35,4 +35,22 @@ class TransactionController extends AbstractController{
     public function destroye(){}
     public function store(){}
     public function index(){}
+
+    // public function listerTransaction() {
+    //     $userId = $this->session->get('user')['id'];
+    //     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    //     $limit = 5; // Nombre d'éléments par page
+    //     $offset = ($page - 1) * $limit;
+
+    //     $transactions = $this->transactionService->getTransactions($userId, $limit, $offset);
+    //     $total = $this->transactionService->countTransactions($userId);
+    //     $totalPages = ceil($total / $limit);
+
+    //     $this->renderhtml('listerTransaction.html.php', [
+    //         'transaction' => $transactions,
+    //         'page' => $page,
+    //         'totalPages' => $totalPages
+    //     ]);
+    // }
+
 }

@@ -131,6 +131,15 @@ $solde_user = $session->get('user')['solde'] ?? [];
                     </tbody>
 
                 </table>
+                <!-- <div class="mt-4 flex justify-center space-x-2">
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <a href="?page=<?= $i ?>" 
+                        class="px-3 py-1 rounded <?= $i == $page ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800' ?>">
+                            <?= $i ?>
+                        </a>
+                    <?php endfor; ?>
+                </div> -->
+
             </div>
         </div>
     </main>

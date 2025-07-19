@@ -31,9 +31,10 @@ class CompteRepository {
         } catch (PDOException $e) {
             $this->pdo->rollBack();
             throw $e;
-            // $this->pdo->rollBack();
-            // var_dump('Erreur CompteRepository:', $e->getMessage()); // 👈 ajoute ceci
-            // die;
+            var_dump('2');
+            $this->pdo->rollBack();
+            var_dump('Erreur CompteRepository:', $e->getMessage()); // 👈 ajoute ceci
+            die;
         }
     }
 }

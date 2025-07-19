@@ -49,5 +49,46 @@ class TransactionRepository extends AbstractRepository{
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    // public function selectById(int $userId, ?int $limit = null, int $offset = 0)
+    // {
+    //     $sql = "
+    //         SELECT t.date, t.type_transaction, t.compte_id, c.user_id, t.tarif, t.numero_destinataire 
+    //         FROM transaction t
+    //         RIGHT JOIN compte c ON t.compte_id = c.id
+    //         JOIN utilisateur u ON c.user_id = u.id
+    //         WHERE c.statut = 'actif' AND c.user_id = :user_id
+    //         ORDER BY t.date DESC
+    //     ";
+
+    //     if ($limit !== null) {
+    //         $sql .= " LIMIT :limit OFFSET :offset";
+    //     }
+
+    //     $stmt = $this->pdo->prepare($sql);
+    //     $stmt->bindValue(':user_id', $userId, \PDO::PARAM_INT);
+
+    //     if ($limit !== null) {
+    //         $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+    //         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+    //     }
+
+    //     $stmt->execute();
+    //     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    // }
+
+    // TransactionRepository.php
+    public function countByUser(int $userId): int {
+        $sql = "
+            SELECT COUNT(*) FROM transaction t
+            RIGHT JOIN compte c ON t.compte_id = c.id
+            WHERE c.statut = 'actif' AND c.user_id = :user_id
+        ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':user_id', $userId, \PDO::PARAM_INT);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
     
 }

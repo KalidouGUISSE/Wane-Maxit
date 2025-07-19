@@ -19,5 +19,14 @@ class TransactionService{
     public function getTransactions(int $userId, ?int $limit = null): array {
         return $this->transactionRepository->selectById($userId, $limit);
     }
+
+//     // TransactionService.php
+// public function countTransactions(int $userId): int {
+//     return $this->transactionRepository->countByUser($userId);
+// }
+
+// public function getTransactions(int $userId, ?int $limit = null, int $offset = 0) {
+//     return $this->transactionRepository->selectById($userId, $limit, $offset);
+// }
     
 }

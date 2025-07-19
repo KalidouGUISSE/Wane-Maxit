@@ -68,6 +68,7 @@ class SecuritieController extends AbstractController {
             header('Location: /');
         } catch (\Exception $e) {
             $this->session->set('errors', ['global' => $e->getMessage()]);
+            var_dump($this->session->get('errors'));die;
             header('Location: /creerCompte'); // On redirige aussi ici en cas d’erreur backend
         }
     }
