@@ -16,6 +16,7 @@ class UserRules
             ValidationMessage::KEY_ADRESSE->value                   => [new RequiredRule()],
             ValidationMessage::KEY_PHOTO_RECTO->value               => [new FileRequiredRule()],
             ValidationMessage::KEY_PHOTO_VERSO->value               => [new FileRequiredRule()],
+            ValidationMessage::KEY_TARIF->value                     => [new RequiredRule(), new TarifRule()],
             ValidationMessage::KEY_PASSWORD_CONFIRMATION->value     => [new Compare(ValidationMessage::KEY_PASSWORD->value)],
             ValidationMessage::KEY_TELEPHONE->value                 => [
                 new RequiredRule(),
@@ -27,6 +28,7 @@ class UserRules
                 new NciRule(),
                 new UniqueRule('nci', $checker, ValidationMessage::NCI_EXISTS->value)
             ],
+
         ];
     }
 

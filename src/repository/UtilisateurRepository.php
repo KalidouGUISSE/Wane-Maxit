@@ -52,7 +52,7 @@ class UtilisateurRepository{
     //     }
     // }
     public function insert(string $password, string $telephone, string $nci, string $nom, string $prenom, string $adresse, ?string $photoRecto, ?string $photoVerso): int {
-       
+    
         $sqlUser = "INSERT INTO utilisateur (nom, prenom, num_tel, nci, adresse, photo_recto, photo_verso, password)
                     VALUES (:nom, :prenom, :telephone, :nci, :adresse, :photo_recto, :photo_verso, :password)";
     
@@ -92,7 +92,7 @@ class UtilisateurRepository{
 
     public function checkCredentials(string $telephone, string $password): ?array {
         $sql = "
-            SELECT u.id, u.nom, u.prenom, u.num_tel, u.adresse, u.password, u.photo_recto, u.photo_verso, c.numero_du_compte , c.solde
+            SELECT u.id as uid, c.id as cid, u.nom, u.prenom, u.num_tel, u.adresse, u.password, u.photo_recto, u.photo_verso, c.numero_du_compte , c.solde
             FROM utilisateur u 
             JOIN compte c on u.id = c.user_id
             WHERE u.num_tel = :telephone";

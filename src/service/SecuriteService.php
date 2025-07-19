@@ -3,6 +3,8 @@ namespace Src\service;
 
 use Src\repository\CompteRepository;
 use Src\repository\UtilisateurRepository;
+use Src\repository\TransactionRepository;
+
 use App\Core\Database;
 use App\Core\Validator\contracts\UniqueValueCheckerInterface;
 use App\Core\FileUpload;
@@ -13,10 +15,12 @@ class SecuriteService implements UniqueValueCheckerInterface {
 
     private UtilisateurRepository $utilisateurRepository;
     private CompteRepository $compteRepository;
+    private TransactionRepository $transactionRepository;
     
     public function __construct(){
         $this->utilisateurRepository = new UtilisateurRepository();
         $this->compteRepository = new CompteRepository();
+        $this->transactionRepository = new TransactionRepository();
     }
 
     // Cette méthode est requise par UniqueValueCheckerInterface
@@ -68,6 +72,10 @@ class SecuriteService implements UniqueValueCheckerInterface {
             $pdo->rollBack();
             throw new \Exception("Erreur lors de la création du compte utilisateur : " . $e->getMessage());
         }
+    }
+
+    public function creerDepot($compteId, $tarif, $telephone){
+        return $this->transactionRepository->creerDepot($compteId, $tarif, $telephone);
     }
 
 }

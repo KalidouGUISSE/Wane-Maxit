@@ -16,8 +16,8 @@ class TransactionService{
     //     return $this->transactionRepository->selectAll();
     // }
 
-    public function getTransactions(int $userId, ?int $limit = null): array {
-        return $this->transactionRepository->selectById($userId, $limit);
+    public function getTransactions(int $comptId, ?int $limit = null): array {
+        return $this->transactionRepository->selectById($comptId, $limit);
     }
 
 //     // TransactionService.php

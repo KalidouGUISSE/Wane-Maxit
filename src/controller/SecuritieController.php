@@ -72,11 +72,44 @@ class SecuritieController extends AbstractController {
             header('Location: /creerCompte'); // On redirige aussi ici en cas d’erreur backend
         }
     }
+
+    public function debutdepot(){
+        $this->renderhtml('layout/popup/depot.html.php');
+    }
+
+    public function depot(){
+        $data = $_POST;
+
+        // $user = $this->session->get('user');
+        // var_dump($user); 
+        // die;
+        $rules = UserRules::getRulesFor(
+            ['telephone','tarif'],
+            [UniqueRule::class] 
+        );
+
+        if (!$this->validator->validate($data,$rules)) {
+            // var_dump('donner invalide');
+            header('Location: /listerTransaction');
+            // die;
+        }
+
+
+        // var_dump($data);die;
+        $tarif = $data['tarif'];
+        $telephone = $data['telephone'];
+        $compteId = $this->session->get('user')['cid'];;
+
+        $this->securiteService->creerDepot($compteId, $tarif, $telephone);
+            header('Location: /listerTransaction');
+        // var_dump('ok');
+        // var_dump($_POST);
+        // die;
+    }
     
     public function show(){}
     public function edit(){}
     public function destroye(){}
     public function store(){}
     public function index(){}
-
 }

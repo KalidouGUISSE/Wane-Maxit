@@ -24,14 +24,22 @@ class TransactionRepository extends AbstractRepository{
     public function delete(){}
 
     
-    public function selectById(int $userId, ?int $limit = null)
+    public function selectById(int $comptId, ?int $limit = null)
     {
+        // $sql = "
+        //     SELECT t.date, t.type_transaction, t.compte_id, c.user_id, t.tarif, t.numero_destinataire 
+        //     FROM transaction t
+        //     RIGHT JOIN compte c ON t.compte_id = c.id
+        //     JOIN utilisateur u ON c.user_id = u.id
+        //     WHERE c.statut = 'actif' AND c.user_id = :user_id
+        //     ORDER BY t.date DESC
+        // ";
         $sql = "
             SELECT t.date, t.type_transaction, t.compte_id, c.user_id, t.tarif, t.numero_destinataire 
             FROM transaction t
             RIGHT JOIN compte c ON t.compte_id = c.id
             JOIN utilisateur u ON c.user_id = u.id
-            WHERE c.statut = 'actif' AND c.user_id = :user_id
+            WHERE t.compte_id = :compt_Id
             ORDER BY t.date DESC
         ";
     
@@ -40,7 +48,7 @@ class TransactionRepository extends AbstractRepository{
         }
     
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':compt_Id', $comptId, \PDO::PARAM_INT);
         
         if ($limit !== null) {
             $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
@@ -90,5 +98,27 @@ class TransactionRepository extends AbstractRepository{
         return (int) $stmt->fetchColumn();
     }
 
-    
+    public function creerDepot($compteId, $tarif, $destinataire): bool {
+        try {
+            $sql = "
+                INSERT INTO transaction (type_transaction, compte_id, numero_destinataire, tarif, date)
+                VALUES (:type, :compte_id, :destinataire, :tarif, NOW())
+            ";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(':type', 'depot', \PDO::PARAM_STR);
+            $stmt->bindValue(':compte_id', $compteId, \PDO::PARAM_INT);
+            $stmt->bindValue(':destinataire', $destinataire, \PDO::PARAM_STR);
+            $stmt->bindValue(':tarif', $tarif, \PDO::PARAM_STR);
+
+            return $stmt->execute();
+
+        } catch (\PDOException $e) {
+            // Log l’erreur si besoin
+            var_dump("Erreur PDO lors de la création du dépôt : " . $e->getMessage());die;
+            echo "Erreur PDO lors de la création du dépôt : " . $e->getMessage();
+            return false;
+        }
+    }
+
 }

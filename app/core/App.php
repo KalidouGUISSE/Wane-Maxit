@@ -1,22 +1,34 @@
 <?php
 namespace App\Core;
+
+use Symfony\Component\Yaml\Yaml;
 use App\Core\Validator\Validator;
 
 class App {
     private static ?App $instance = null;
-    private array $dependencies;
+    private array $dependencies = [];
 
     private function __construct() {
-        $this->dependencies = [
-            "core" => [
-                "router"     => new Router(),
-                // "database"   => Database::getInstance(),
-                "validator"  => Validator::getInstance(),
-                "session"    => Session::getInstance(),
-            ],
-            "services" => [],
-            "repositories" => [],
-        ];
+        $configPath = __DIR__ . '/../config/service.yaml';
+        $config = Yaml::parseFile($configPath);
+
+        foreach ($config as $category => $items) {
+            $this->dependencies[$category] = [];
+
+            foreach ($items as $key => $className) {
+                if (class_exists($className)) {
+                    // Cas particuliers pour les singletons
+                    if (method_exists($className, 'getInstance')) {
+                        $this->dependencies[$category][$key] = $className::getInstance();
+                    } else {
+                        $this->dependencies[$category][$key] = new $className();
+                    }
+                } else {
+                    var_dump("Classe '$className' non trouvée pour la dépendance '$key' dans '$category'.");die;
+                    throw new \Exception("Classe '$className' non trouvée pour la dépendance '$key' dans '$category'.");
+                }
+            }
+        }
     }
 
     public static function getInstance(): App {

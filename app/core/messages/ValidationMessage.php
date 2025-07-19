@@ -15,6 +15,7 @@ enum ValidationMessage: string
     case PASSWORD_MISMATCH   = 'Les mots de passe ne correspondent pas.';
     case IS_USED             = 'Cette valeur est déjà utilisée.';
     case COMPT_CREER         = 'votre compte MAXITSA a bien été créé !';
+    case INVALID_TARIF       = 'Le tarif doit être un nombre positif avec au plus deux décimales.';
 
     // 🏷️ Champs
     case KEY_NOM                   = 'nom';
@@ -28,4 +29,5 @@ enum ValidationMessage: string
     case KEY_NCI                   = 'nci';
     case BONJOUR                   = 'Bonjour';
     case INDICATEUR                = '+221';
+    case KEY_TARIF                 = 'tarif';
 }

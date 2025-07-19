@@ -18,10 +18,10 @@ class TransactionController extends AbstractController{
         $this->transactionService = new TransactionService();
     }
     public function listerTransaction(){
-        $userId = $this->session->get('user')['id'];
         // var_dump($this->session->get('user'));die;
+        $comptId = $this->session->get('user')['cid'];
         $limit = isset($_POST['voirPlus']) ? null : 10;
-        $transactions = $this->transactionService->getTransactions($userId, $limit);
+        $transactions = $this->transactionService->getTransactions($comptId, $limit);
         
         // var_dump(isset($_POST['voirPlus']));die;
 

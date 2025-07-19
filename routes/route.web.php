@@ -12,6 +12,7 @@ $routes = [
     '/creer' => ['controller' => SecuritieController::class, 'action' => 'creer' ],
     '/creerCompte' => ['controller' => SecuritieController::class, 'action' => 'creerCompte' ],
     '/seConnecter' => ['controller' => UtilisateurController::class, 'action' => 'seConnecter'],
-    '/listerTransaction' => ['controller' => TransactionController::class, 'action' => 'listerTransaction','middleware' => ['auth'] ]
-
+    '/listerTransaction' => ['controller' => TransactionController::class, 'action' => 'listerTransaction','middleware' => ['auth'] ],
+    '/debutdepot' => ['controller' => SecuritieController::class, 'action' => 'debutdepot','middleware' => ['auth'] ],
+    '/depot' =>  ['controller' => SecuritieController::class, 'action' => 'depot','middleware' => ['auth'] ],
 ];
