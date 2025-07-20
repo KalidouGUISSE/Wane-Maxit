@@ -1,8 +1,4 @@
 .env
-<<<<<<< HEAD
 vendor
-.env
-=======
 docker-compose.yml
 Dockerfile.env
->>>>>>> d19a916 (Ajout de .env dans .gitignore)
