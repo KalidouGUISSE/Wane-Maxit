@@ -3,12 +3,29 @@ $session = \App\Core\App::getDependencie('core', 'session');
 $solde_user = $session->get('user')['solde'] ?? [];
 // var_dump($solde_user);die;
 ?>
+
     <!-- Main Content -->
+    <?php
+        // Récupération des erreurs et données depuis la session
+        $session = \App\Core\App::getDependencie('core', 'session');
+        $errors = $session->get('form_errors') ?? [];
+        $formData = $session->get('form_data') ?? [];
+        $formType = $session->get('form_type') ?? null;
+        $solde_user = $session->get('user')['solde'] ?? 0;
+        
+        // Nettoyer les données de session après utilisation
+        if (!empty($errors) || !empty($formData)) {
+            $session->remove('form_errors');
+            $session->remove('form_data');
+            $session->remove('form_type');
+        }
+    ?>
+
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Action Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <!-- Depot Card href="<?=URI_HOST?>debutdepot" -->
-            <div  class="card-hover bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 text-white cursor-pointer" onclick="openModal('depot')">
+            <!-- Depot Card -->
+            <div class="card-hover bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 text-white cursor-pointer" onclick="openModal('depot')">
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="flex items-center space-x-3 mb-2">
@@ -64,7 +81,7 @@ $solde_user = $session->get('user')['solde'] ?? [];
 
         <!-- Transaction History -->
         <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center p-6">
                 <h2 class="text-xl font-bold text-gray-900">
                     Historique des transactions
                 </h2>
@@ -129,18 +146,7 @@ $solde_user = $session->get('user')['solde'] ?? [];
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
-
                 </table>
-                <!-- <div class="mt-4 flex justify-center space-x-2">
-                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <a href="?page=<?= $i ?>" 
-                        class="px-3 py-1 rounded <?= $i == $page ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800' ?>">
-                            <?= $i ?>
-                        </a>
-                    <?php endfor; ?>
-                </div> -->
-
             </div>
         </div>
     </main>
-

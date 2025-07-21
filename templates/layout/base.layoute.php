@@ -19,6 +19,13 @@
         .table-row:hover {
             background-color: #fef3f2;
         }
+        .error-shake {
+            animation: shake 0.6s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 20%, 40%, 60%, 80%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+        }
     </style>
 </head>
 <body class="bg-orange-50 min-h-screen">
@@ -36,7 +43,7 @@
                     <a href="#" class="text-white hover:text-orange-100 transition-colors">Ajouter un Compte</a>
                     <a href="#" class="text-white hover:text-orange-100 transition-colors">Changer Compte</a>
                     <a href="#" class="text-white hover:text-orange-100 transition-colors">Consulter Solde</a>
-                    <a href="<?=$_ENV['URI_HOST']?>deconnexion" class="text-white hover:text-orange-100 transition-colors">Déconnexion</a>
+                    <a href="<?=URI_HOST?>deconnexion" class="text-white hover:text-orange-100 transition-colors">Déconnexion</a>
                 </nav>
                 
                 <!-- User Profile -->
@@ -56,10 +63,11 @@
         </div>
     </header>
 
-    <!-- Main Content -->
+        <!-- Main Content -->
         <?php
-        echo $containteForLayoute;
+            echo $containteForLayoute;
         ?>
+
 
     <!-- Modal -->
     <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
@@ -78,8 +86,44 @@
         </div>
     </div>
 
-
     <script>
+        // Variables PHP injectées en JavaScript pour gérer les erreurs
+        const formErrors = <?= json_encode($errors) ?>;
+        const formData = <?= json_encode($formData) ?>;
+        const formType = <?= json_encode($formType) ?>;
+
+        // Fonction pour afficher les erreurs
+        function displayError(fieldName, errorMessage) {
+            const field = document.querySelector(`[name="${fieldName}"]`);
+            if (field) {
+                field.classList.add('border-red-500', 'error-shake');
+                field.classList.remove('border-gray-300');
+                
+                // Créer ou mettre à jour le message d'erreur
+                let errorDiv = field.parentNode.querySelector('.error-message');
+                if (!errorDiv) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message text-red-500 text-sm mt-1';
+                    field.parentNode.appendChild(errorDiv);
+                }
+                errorDiv.textContent = errorMessage;
+                
+                // Retirer l'animation shake après un délai
+                setTimeout(() => {
+                    field.classList.remove('error-shake');
+                }, 600);
+            }
+        }
+
+        // Fonction pour effacer les erreurs
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(error => error.remove());
+            document.querySelectorAll('input').forEach(input => {
+                input.classList.remove('border-red-500');
+                input.classList.add('border-gray-300');
+            });
+        }
+
         function openModal(type) {
             const modal = document.getElementById('modal');
             const modalTitle = document.getElementById('modalTitle');
@@ -88,70 +132,77 @@
             let title = '';
             let content = '';
             
+            // Effacer les erreurs précédentes
+            clearErrors();
+            
             switch(type) {
                 case 'depot':
                     title = 'Effectuer un Dépôt';
                     content = `
-                    <form action="<?=URI_HOST?>depot" method="post">
-                    
-                        <div class="space-y-4">
-                            <div>
-                                <label if="tarif" class="block text-sm font-medium text-gray-700 mb-2">Montant</label>
-                                <input name="tarif" type="text" placeholder="Entrez le montant" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        <form action="<?=URI_HOST?>depot" method="post" onsubmit="return validateForm('depot')">
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="tarif" class="block text-sm font-medium text-gray-700 mb-2">Montant</label>
+                                    <input name="tarif" type="text" placeholder="Entrez le montant" value="${formData.tarif || ''}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label for="telephone" class="block text-sm font-medium text-gray-700 mb-2">Numéro de téléphone</label>
+                                    <input name="telephone" type="tel" placeholder="Entrez votre numéro" value="${formData.telephone || ''}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                </div>
+                                <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 rounded-lg font-medium transition-colors">
+                                    Confirmer le dépôt
+                                </button>
                             </div>
-                            <div>
-                                <label id="telephone" class="block text-sm font-medium text-gray-700 mb-2">Numéro de téléphone</label>
-                                <input name="telephone" type="tel" placeholder="Entrez votre numéro" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-                            </div>
-                            <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 rounded-lg font-medium transition-colors">
-                                Confirmer le dépôt
-                            </button>
-                        </div>
-                    </form>
-
+                        </form>
                     `;
                     break;
+                    
                 case 'paiement':
                     title = 'Effectuer un Paiement';
                     content = `
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Destinataire</label>
-                                <input type="text" placeholder="Numéro ou nom du destinataire" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        <form action="<?=URI_HOST?>paiement" method="post" onsubmit="return validateForm('paiement')">
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="destinataire" class="block text-sm font-medium text-gray-700 mb-2">Destinataire</label>
+                                    <input name="destinataire" type="text" placeholder="Numéro ou nom du destinataire" value="${formData.destinataire || ''}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label for="montant" class="block text-sm font-medium text-gray-700 mb-2">Montant</label>
+                                    <input name="montant" type="number" placeholder="Entrez le montant" value="${formData.montant || ''}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label for="motif" class="block text-sm font-medium text-gray-700 mb-2">Motif (optionnel)</label>
+                                    <input name="motif" type="text" placeholder="Motif du paiement" value="${formData.motif || ''}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                </div>
+                                <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 rounded-lg font-medium transition-colors">
+                                    Envoyer le paiement
+                                </button>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Montant</label>
-                                <input type="number" placeholder="Entrez le montant" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Motif (optionnel)</label>
-                                <input type="text" placeholder="Motif du paiement" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-                            </div>
-                            <button class="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 rounded-lg font-medium transition-colors">
-                                Envoyer le paiement
-                            </button>
-                        </div>
+                        </form>
                     `;
                     break;
+                    
                 case 'retrait':
                     title = 'Effectuer un Retrait';
                     content = `
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Montant à retirer</label>
-                                <input type="number" placeholder="Entrez le montant" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        <form action="<?=URI_HOST?>retrait" method="post" onsubmit="return validateForm('retrait')">
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="montant_retrait" class="block text-sm font-medium text-gray-700 mb-2">Montant à retirer</label>
+                                    <input name="montant_retrait" type="number" placeholder="Entrez le montant" value="${formData.montant_retrait || ''}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label for="code_pin" class="block text-sm font-medium text-gray-700 mb-2">Code PIN</label>
+                                    <input name="code_pin" type="password" placeholder="Entrez votre code PIN" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                </div>
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                                    <p class="text-sm text-yellow-800">Le retrait sera traité dans les 24h ouvrées</p>
+                                </div>
+                                <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 rounded-lg font-medium transition-colors">
+                                    Confirmer le retrait
+                                </button>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Code PIN</label>
-                                <input type="password" placeholder="Entrez votre code PIN" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-                            </div>
-                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                                <p class="text-sm text-yellow-800">Le retrait sera traité dans les 24h ouvrées</p>
-                            </div>
-                            <button class="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 rounded-lg font-medium transition-colors">
-                                Confirmer le retrait
-                            </button>
-                        </div>
+                        </form>
                     `;
                     break;
             }
@@ -160,6 +211,61 @@
             modalContent.innerHTML = content;
             modal.classList.remove('hidden');
             modal.classList.add('flex');
+            
+            // Afficher les erreurs si elles existent et correspondent au type de formulaire
+            setTimeout(() => {
+                if (formErrors && Object.keys(formErrors).length > 0 && formType === type) {
+                    Object.keys(formErrors).forEach(fieldName => {
+                        displayError(fieldName, formErrors[fieldName]);
+                    });
+                }
+            }, 100);
+        }
+        
+        // Validation côté client
+        function validateForm(type) {
+            clearErrors();
+            let isValid = true;
+            
+            if (type === 'depot') {
+                const tarif = document.querySelector('[name="tarif"]').value;
+                const telephone = document.querySelector('[name="telephone"]').value;
+                
+                if (!tarif || tarif <= 0) {
+                    displayError('tarif', 'Le montant doit être supérieur à 0');
+                    isValid = false;
+                }
+                if (!telephone || telephone.length < 9) {
+                    displayError('telephone', 'Le numéro de téléphone est invalide');
+                    isValid = false;
+                }
+            } else if (type === 'paiement') {
+                const destinataire = document.querySelector('[name="destinataire"]').value;
+                const montant = document.querySelector('[name="montant"]').value;
+                
+                if (!destinataire.trim()) {
+                    displayError('destinataire', 'Le destinataire est requis');
+                    isValid = false;
+                }
+                if (!montant || montant <= 0) {
+                    displayError('montant', 'Le montant doit être supérieur à 0');
+                    isValid = false;
+                }
+            } else if (type === 'retrait') {
+                const montantRetrait = document.querySelector('[name="montant_retrait"]').value;
+                const codePin = document.querySelector('[name="code_pin"]').value;
+                
+                if (!montantRetrait || montantRetrait <= 0) {
+                    displayError('montant_retrait', 'Le montant doit être supérieur à 0');
+                    isValid = false;
+                }
+                if (!codePin || codePin.length < 4) {
+                    displayError('code_pin', 'Le code PIN doit contenir au moins 4 caractères');
+                    isValid = false;
+                }
+            }
+            
+            return isValid;
         }
         
         function closeModal() {
@@ -172,6 +278,13 @@
         document.getElementById('modal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
+            }
+        });
+
+        // Auto-ouvrir le modal si il y a des erreurs
+        document.addEventListener('DOMContentLoaded', function() {
+            if (formType && formErrors && Object.keys(formErrors).length > 0) {
+                openModal(formType);
             }
         });
     </script>

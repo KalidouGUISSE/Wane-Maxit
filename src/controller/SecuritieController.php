@@ -18,7 +18,8 @@ class SecuritieController extends AbstractController {
     }
 
     public function connection(){
-        require_once "../templates/seConnecter.html.php";
+        $this->renderhtml('/seConnecter.html.php');
+        // require_once "../templates/seConnecter.html.php";
     }
 
     public function deconnexion() {
